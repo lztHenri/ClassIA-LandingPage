@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class IA</title>
+    <link rel="icon" type="image/x-icon" href="/class-ia-logo-D_QslCJf.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary: #1e293b;
+            --accent: #06b6d4;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --blur: blur(16px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            overflow-x: hidden;
+        }
+
+        /* Keyframes & Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -468px 0;
+            }
+            100% {
+                background-position: 468px 0;
+            }
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 5px var(--primary), 0 0 10px var(--primary), 0 0 15px var(--primary);
+            }
+            50% {
+                box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary), 0 0 30px var(--primary);
+            }
+        }
+
+        /* Background Elements */
+        .bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .bg-shapes::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(37, 99, 235, 0.05) 180deg, transparent 360deg);
+            animation: rotate 30s linear infinite;
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(6, 182, 212, 0.1));
+            border-radius: 50%;
+            backdrop-filter: var(--blur);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            top: 40%;
+            left: 80%;
+            animation-delay: 4s;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: var(--blur);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        header.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-lg);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            padding: 140px 0 100px;
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+            background-size: 400% 400%;
+            animation: gradient-shift 15s ease infinite;
+            overflow: hidden;
+        }
+
+        .hero .bg-shapes {
+            opacity: 0.6;
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            animation: fadeInUp 1s ease-out 0.2s both;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: 1.375rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+            line-height: 1.7;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .hero-cta {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.4);
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 4rem;
+            animation: fadeInUp 1s ease-out 0.8s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Sections */
+        section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Como Funciona */
+        .how-it-works {
+            padding: 120px 0;
+            background: var(--bg-primary);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            background: var(--bg-secondary);
+            backdrop-filter: var(--blur);
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-1);
+        }
+
+        .step:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+            background: white;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-1);
+            color: white;
+            border-radius: 20px;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            position: relative;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        .step h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .step p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        /* Benefícios */
+        .benefits {
+            padding: 120px 0;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .benefit {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .benefit:hover::before {
+            opacity: 0.05;
+        }
+
+        .benefit:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .benefit-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .benefit h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            position: relative;
+            z-index: 2;
+        }
+
+        .benefit p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Demonstração */
+        .demo {
+            padding: 120px 0;
+            background: var(--bg-primary);
+        }
+
+        .demo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 4rem;
+        }
+
+        .demo-content h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .demo-features {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .demo-features li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .demo-features li::before {
+            content: "✓";
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+            background: rgba(37, 99, 235, 0.1);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .demo-mockup {
+            background: var(--gradient-1);
+            border-radius: 20px;
+            padding: 3rem;
+            color: white;
+            text-align: center;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-mockup::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(255, 255, 255, 0.1) 180deg, transparent 360deg);
+            animation: rotate 20s linear infinite;
+        }
+
+        .demo-mockup-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .demo-mockup h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .demo-mockup p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Preços */
+        .pricing {
+            padding: 120px 0;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .price-card {
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            border: 2px solid transparent;
+            overflow: hidden;
+        }
+
+        .price-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .price-card.featured {
+            border: 2px solid var(--primary);
+            transform: scale(1.05);
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.02), rgba(255, 255, 255, 1));
+        }
+
+        .price-card:hover {
+            transform: translateY(-20px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .price-card.featured:hover {
+            transform: scale(1.05) translateY(-20px);
+        }
+
+        .price-badge {
+            background: var(--gradient-1);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .price-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            position: relative;
+            z-index: 2;
+        }
+
+        .price-amount {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .price-period {
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .price-features {
+            list-style: none;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .price-features li {
+            padding: 0.75rem 0;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .price-features li::before {
+            content: "✓";
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+            background: rgba(37, 99, 235, 0.1);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Depoimentos */
+        .testimonials {
+            padding: 120px 0;
+            background: var(--bg-primary);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .testimonial {
+            background: var(--bg-secondary);
+            padding: 3rem;
+            border-radius: 20px;
+            border-left: 6px solid var(--primary);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial::before {
+            content: '"';
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            font-size: 6rem;
+            color: rgba(37, 99, 235, 0.1);
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .testimonial:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+            background: white;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.15rem;
+            line-height: 1.7;
+            position: relative;
+            z-index: 2;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .testimonial-info h4 {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .testimonial-info p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* FAQ */
+        .faq {
+            padding: 120px 0;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        }
+
+        .faq-grid {
+            margin-top: 4rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .faq-item:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .faq-question {
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .faq-question:hover {
+            color: var(--primary);
+        }
+
+        .faq-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            padding: 0 2rem 2rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1.05rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-primary);
+            color: white;
+            padding: 80px 0 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, transparent 50%, rgba(6, 182, 212, 0.1) 100%);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-section h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .footer-section p {
+            color: #cbd5e1;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section a {
+            color: #cbd5e1;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.75rem;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+            padding: 0.25rem 0;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 3rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+            
+            .section-title {
+                font-size: 2.25rem;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .demo-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .steps,
+            .benefits-grid,
+            .pricing-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(37, 99, 235, 0.1);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: rotate 1s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-overlay" id="loading">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Background Elements -->
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+
+    <!-- Header -->
+    <header id="header">
+        <nav class="container">
+            <div class="logo">Class IA</div>
+            <ul class="nav-links">
+                <li><a href="#como-funciona">Como Funciona</a></li>
+                <li><a href="#beneficios">Benefícios</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#precos">Preços</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="bg-shapes">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <h1>Revolucione a Criação de Provas com Inteligência Artificial</h1>
+                <p class="subtitle">Transforme horas de trabalho em segundos. O Class IA gera provas personalizadas, corrige automaticamente e oferece insights pedagógicos avançados para elevar o nível do seu ensino.</p>
+                <div class="hero-cta">
+                    <a href="https://classia-pi.vercel.app" class="cta-button">
+                        <span>Começar Gratuitamente</span>
+                        <span>→</span>
+                    </a>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 1rem;">✨ 7 dias grátis • Sem cartão de crédito • Cancele quando quiser</p>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">Professores Ativos</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Economia de Tempo</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">500K+</span>
+                        <span class="stat-label">Provas Geradas</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Como Funciona -->
+    <section class="how-it-works" id="como-funciona">
+        <div class="container">
+            <h2 class="section-title">Como Funciona</h2>
+            <p class="section-subtitle">Três passos simples para revolucionar sua metodologia de avaliação</p>
+            <div class="steps">
+                <div class="step" data-aos="fade-up" data-aos-delay="100">
+                    <div class="step-number">1</div>
+                    <h3>Configure o Conteúdo</h3>
+                    <p>Selecione matéria, série, tópicos e competências. Nossa IA adapta-se perfeitamente ao currículo brasileiro (BNCC) e às especificidades da sua instituição.</p>
+                </div>
+                <div class="step" data-aos="fade-up" data-aos-delay="200">
+                    <div class="step-number">2</div>
+                    <h3>Personalize com Precisão</h3>
+                    <p>Defina tipos de questões, níveis de complexidade, tempo de prova e critérios específicos. Cada avaliação é única e alinhada ao seu método pedagógico.</p>
+                </div>
+                <div class="step" data-aos="fade-up" data-aos-delay="300">
+                    <div class="step-number">3</div>
+                    <h3>Aplique e Analise</h3>
+                    <p>Gere, imprima ou aplique digitalmente. Receba correção instantânea e relatórios detalhados com insights para aprimorar o aprendizado dos seus alunos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefícios -->
+    <section class="benefits" id="beneficios">
+        <div class="container">
+            <h2 class="section-title">Transforme Sua Rotina Pedagógica</h2>
+            <p class="section-subtitle">Descubra como a IA pode potencializar seu trabalho e melhorar os resultados dos seus alunos</p>
+            <div class="benefits-grid">
+                <div class="benefit" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="benefit-icon">⚡</div>
+                    <h3>Velocidade Incomparável</h3>
+                    <p>Reduza 95% do tempo gasto na criação de provas. O que levava 3 horas, agora leva 3 minutos. Mais tempo para o que realmente importa: seus alunos.</p>
+                </div>
+                <div class="benefit" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="benefit-icon">🎯</div>
+                    <h3>Personalização Inteligente</h3>
+                    <p>IA treinada especificamente para educação brasileira. Questões adaptadas ao nível cognitivo, contexto regional e objetivos pedagógicos específicos.</p>
+                </div>
+                <div class="benefit" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="benefit-icon">🔬</div>
+                    <h3>Análises Avançadas</h3>
+                    <p>Relatórios com insights pedagógicos profundos: identificação de lacunas, sugestões de reforço e acompanhamento da evolução individual.</p>
+                </div>
+                <div class="benefit" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="benefit-icon">🌟</div>
+                    <h3>Qualidade Garantida</h3>
+                    <p>Banco com milhões de questões validadas por especialistas. Cada prova passa por verificação automática de qualidade e coerência.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demonstração -->
+    <section class="demo" id="demo">
+        <div class="container">
+            <h2 class="section-title">Veja o Class IA em Ação</h2>
+            <p class="section-subtitle">Interface intuitiva projetada por educadores, para educadores</p>
+            <div class="demo-container">
+                <div class="demo-content" data-aos="slide-right">
+                    <h3>Tecnologia que Simplifica, Resultados que Impressionam</h3>
+                    <ul class="demo-features">
+                        <li>Dashboard intuitivo com métricas em tempo real</li>
+                        <li>Editor de questões com IA integrada</li>
+                        <li>Biblioteca de modelos pré-configurados</li>
+                        <li>Relatórios visuais e exportação automática</li>
+                    </ul>
+                    <a href="https://classia-pi.vercel.app" class="cta-button">Ver Demo Completa</a>
+                </div>
+                <div class="demo-mockup" data-aos="slide-left">
+                    <div class="demo-mockup-content" style="text-align: center;">
+                        <img src="/Capturar.JPG" alt="Mockup da Plataforma" style="max-width: 100%; border-radius: 12px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Preços -->
+    <section class="pricing" id="precos">
+        <div class="container">
+            <h2 class="section-title">Invista no Futuro da Educação</h2>
+            <p class="section-subtitle">Planos flexíveis para cada necessidade, do professor individual à grande instituição</p>
+            <div class="pricing-grid">
+                <div class="price-card" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="price-title">Descoberta</h3>
+                    <div class="price-amount">Grátis</div>
+                    <div class="price-period">Para sempre</div>
+                    <ul class="price-features">
+                        <li>5 provas mensais</li>
+                        <li>Questões básicas de múltipla escolha</li>
+                        <li>Modelos pré-definidos</li>
+                        <li>Suporte por email</li>
+                        <li>Relatórios básicos</li>
+                    </ul>
+                    <a href="https://classia-pi.vercel.app" class="cta-button">Começar Grátis</a>
+                </div>
+                
+                <div class="price-card featured" data-aos="fade-up" data-aos-delay="200">
+                    <div class="price-badge">⭐ Mais Escolhido</div>
+                    <h3 class="price-title">Professor Pro</h3>
+                    <div class="price-amount">R$ 29,90</div>
+                    <div class="price-period">por mês</div>
+                    <ul class="price-features">
+                        <li>Provas ilimitadas</li>
+                        <li>Todos os tipos de questões</li>
+                        <li>IA personalizada por matéria</li>
+                        <li>Correção automática avançada</li>
+                        <li>Relatórios detalhados com insights</li>
+                        <li>Banco de questões premium</li>
+                        <li>Suporte prioritário</li>
+                        <li>Integração com Google Classroom</li>
+                    </ul>
+                    <a href="https://www.asaas.com/c/xmqwmtgw5llu8bte" class="cta-button">Assinar Pro</a>
+                </div>
+                
+                <div class="price-card" data-aos="fade-up" data-aos-delay="300">
+                    <h3 class="price-title">Instituição</h3>
+                    <div class="price-amount">Consultar Atendente</div>
+                    <div class="price-period">por mês</div>
+                    <ul class="price-features">
+                        <li>Até 100 professores</li>
+                        <li>Dashboard administrativo</li>
+                        <li>Relatórios institucionais</li>
+                        <li>API para integrações</li>
+                        <li>Marca personalizada</li>
+                        <li>Treinamento completo da equipe</li>
+                        <li>Gerente de sucesso dedicado</li>
+                        <li>SLA de 99,9% de disponibilidade</li>
+                    </ul>
+                    <a href="#" class="cta-button">Solicitar Proposta</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Depoimentos -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">Professores Que Já Transformaram Suas Aulas</h2>
+            <p class="section-subtitle">Histórias reais de educadores que revolucionaram sua metodologia</p>
+            <div class="testimonials-grid">
+                <div class="testimonial" data-aos="fade-right">
+                    <p class="testimonial-text">"O Class IA não apenas economizou meu tempo - transformou minha pedagogia. As análises me mostram exatamente onde cada aluno precisa de atenção. Meus resultados melhoraram 40% no último semestre."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">AP</div>
+                        <div class="testimonial-info">
+                            <h4>Ana Paula Rodrigues</h4>
+                            <p>Professora de Matemática • Colégio São Bento</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial" data-aos="fade-up">
+                    <p class="testimonial-text">"Implementamos o Class IA em toda a escola. A padronização das avaliações e os relatórios institucionais nos deram uma visão estratégica inédita. Recomendo para qualquer gestor educacional."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">CS</div>
+                        <div class="testimonial-info">
+                            <h4>Carlos Silva</h4>
+                            <p>Coordenador Pedagógico • Rede Educacional Futuro</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial" data-aos="fade-left">
+                    <p class="testimonial-text">"A qualidade das questões geradas é impressionante. É como ter uma equipe de especialistas trabalhando 24h para mim. Meus alunos notaram a diferença na qualidade das avaliações."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">MF</div>
+                        <div class="testimonial-info">
+                            <h4>Maria Fernanda Costa</h4>
+                            <p>Professora de História • Instituto Educacional Inovação</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2 class="section-title">Perguntas Frequentes</h2>
+            <p class="section-subtitle">Esclarecemos suas dúvidas sobre nossa plataforma</p>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Como funciona o período de teste gratuito?
+                        <span class="faq-toggle">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Oferecemos 7 dias completos de acesso premium sem custo. Teste todas as funcionalidades, gere provas ilimitadas e experimente nossos relatórios avançados. Não solicitamos cartão de crédito e você pode cancelar a qualquer momento.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        As questões seguem a BNCC e currículos estaduais?
+                        <span class="faq-toggle">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutamente! Nossa IA foi especificamente treinada com base na BNCC, currículos estaduais e diretrizes educacionais brasileiras. Todas as questões são alinhadas às competências e habilidades específicas de cada ano letivo.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Posso personalizar totalmente minhas provas?
+                        <span class="faq-toggle">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sim! Você controla todos os aspectos: tipos de questões, níveis de dificuldade, temas específicos, formato visual, tempo de prova e critérios de correção. A IA se adapta ao seu estilo pedagógico.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Como funciona a correção automática?
+                        <span class="faq-toggle">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Para questões objetivas, a correção é instantânea com 100% de precisão. Para questões discursivas, nossa IA analisa respostas baseada em critérios que você define, oferecendo correção consistente e feedback detalhado.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Meus dados e questões ficam seguros?
+                        <span class="faq-toggle">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Segurança é nossa prioridade máxima. Utilizamos criptografia de nível bancário, servidores em nuvem certificados e backup automático. Seus dados são privados e jamais compartilhados com terceiros.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Class IA</h3>
+                    <p>Revolucionando a educação brasileira com inteligência artificial de ponta. Mais tempo para ensinar, menos tempo criando avaliações.</p>
+                    <div style="margin-top: 2rem;">
+                        <a href="#" style="display: inline-block; margin-right: 1rem;">🐦 Twitter</a>
+                        <a href="#" style="display: inline-block; margin-right: 1rem;">📘 Facebook</a>
+                        <a href="#" style="display: inline-block;">💼 LinkedIn</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Empresa</h3>
+                    <a href="#">Sobre Nós</a>
+                    <a href="#">Carreiras</a>
+                    <a href="#">Imprensa</a>
+                    <a href="#">Contato</a>
+                    <a href="#">Parceiros</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Class IA Tecnologia Educacional Ltda. Todos os direitos reservados. Desenvolvido por Atsui Code</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            const loading = document.getElementById('loading');
+            setTimeout(() => {
+                loading.classList.add('hidden');
+            }, 1000);
+        });
+
+        // Header Scroll Effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all FAQs
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Toggle current FAQ
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.offsetTop;
+                    const offsetPosition = elementPosition - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Advanced Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const element = entry.target;
+                    
+                    // Apply different animations based on data attributes
+                    if (element.dataset.aos === 'fade-up') {
+                        element.style.animation = `fadeInUp 0.8s ease-out forwards`;
+                    } else if (element.dataset.aos === 'fade-right') {
+                        element.style.animation = `slideInLeft 0.8s ease-out forwards`;
+                    } else if (element.dataset.aos === 'fade-left') {
+                        element.style.animation = `slideInRight 0.8s ease-out forwards`;
+                    } else if (element.dataset.aos === 'zoom-in') {
+                        element.style.animation = `scaleIn 0.8s ease-out forwards`;
+                    } else if (element.dataset.aos === 'slide-right') {
+                        element.style.animation = `slideInLeft 1s ease-out forwards`;
+                    } else if (element.dataset.aos === 'slide-left') {
+                        element.style.animation = `slideInRight 1s ease-out forwards`;
+                    } else {
+                        // Default animation
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                    
+                    // Add delay if specified
+                    if (element.dataset.aosDelay) {
+                        element.style.animationDelay = element.dataset.aosDelay + 'ms';
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Initialize animations
+        document.querySelectorAll('[data-aos]').forEach(el => {
+            el.style.opacity = '0';
+            if (el.dataset.aos === 'fade-up') {
+                el.style.transform = 'translateY(30px)';
+            } else if (el.dataset.aos === 'fade-right') {
+                el.style.transform = 'translateX(-50px)';
+            } else if (el.dataset.aos === 'fade-left') {
+                el.style.transform = 'translateX(50px)';
+            } else if (el.dataset.aos === 'zoom-in') {
+                el.style.transform = 'scale(0.8)';
+            } else if (el.dataset.aos === 'slide-right') {
+                el.style.transform = 'translateX(-80px)';
+            } else if (el.dataset.aos === 'slide-left') {
+                el.style.transform = 'translateX(80px)';
+            }
+            observer.observe(el);
+        });
+
+        // Also observe elements without data-aos for basic animation
+        document.querySelectorAll('.step, .benefit, .price-card, .testimonial').forEach(el => {
+            if (!el.dataset.aos) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                observer.observe(el);
+            }
+        });
+
+        // Parallax effect for floating elements
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = scrolled * 0.5;
+            
+            document.querySelectorAll('.floating-element').forEach((el, index) => {
+                const speed = (index + 1) * 0.3;
+                el.style.transform = `translateY(${parallax * speed}px)`;
+            });
+        });
+
+        // Counter animation for stats
+        function animateCounter(element, target, duration = 2000) {
+            let current = 0;
+            const increment = target / (duration / 16);
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                
+                if (element.textContent.includes('K+')) {
+                    element.textContent = Math.floor(current / 1000) + 'K+';
+                } else if (element.textContent.includes('%')) {
+                    element.textContent = Math.floor(current) + '%';
+                } else {
+                    element.textContent = Math.floor(current) + '+';
+                }
+            }, 16);
+        }
+
+        // Initialize counter animation when stats come into view
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumber = entry.target;
+                    const text = statNumber.textContent;
+                    let target;
+                    
+                    if (text.includes('10K+')) target = 10000;
+                    else if (text.includes('95%')) target = 95;
+                    else if (text.includes('500K+')) target = 500000;
+                    
+                    if (target) {
+                        statNumber.textContent = '0';
+                        animateCounter(statNumber, target);
+                        statsObserver.unobserve(statNumber);
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('.stat-number').forEach(stat => {
+            statsObserver.observe(stat);
+        });
+
+        // Enhanced button interactions
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.02)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add ripple effect to buttons
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.5);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    left: ${x}px;
+                    top: ${y}px;
+                    width: ${size}px;
+                    height: ${size}px;
+                `;
+                
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Add ripple keyframe
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
